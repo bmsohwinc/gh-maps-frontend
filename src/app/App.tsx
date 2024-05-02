@@ -22,26 +22,78 @@ const BASE_URL = 'http://localhost:3001';
 
 export default function App() {
 
+    const [inputUser, setInputUser] = useImmer<String>('');
     const [currentUserState, setCurrentUserState] = useImmer<UserDataState>(getInitialUserDataState());
     const [recentlyViewed, setRecentlyViewed] = useImmer<HistoryCard[]>([]);
+    const [dataStore, setDataStore] = useImmer<Map<String, UserDataState>>(new Map<String, UserDataState>());
 
     function handleUserInputChange(e) {
-        setCurrentUserState((draft) => {
-            draft.login = e.target.value;
-        });
+        setInputUser(e.target.value.trim());
     }
 
     function handleCoderClick(clickedUser: HistoryCard) {
+        console.log(`Clicked for ${clickedUser}`);
         if (clickedUser.login === currentUserState.login) {
             return;
         }
 
-        setRecentlyViewed((draft) => {
-            draft.unshift(clickedUser);
-        });
+        // Save current user
+        if (currentUserState.login !== '') {
+            setRecentlyViewed((draft) => {
+                draft.unshift({
+                    login: currentUserState.login,
+                    avatarUrl: currentUserState.avatarUrl,
+                });
+            });
+
+            setDataStore((draft) => {
+                draft.set(currentUserState.login, currentUserState);
+            });
+        }
+
+        setInputUser(clickedUser.login);
+        
+        if (dataStore.has(clickedUser.login)) {
+            setCurrentUserState((draft) => {
+                return dataStore.get(clickedUser.login);
+            });
+        } else {
+            fetch(`${BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setCurrentUserState((draft) => {
+                    draft.login = clickedUser.login;
+                    draft.avatarUrl = data.user.avatarUrl;
+                    draft.name = data.user.name;
+                    draft.followingsData = processors.processFollowings(data.user.following.nodes);
+                    draft.followingsPage = {
+                        afterPage: data.user.following.pageInfo.endCursor,
+                        hasNextPage: data.user.following.pageInfo.hasNextPage,
+                    };
+                });
+            });
+        }
     }
 
     function fetchData() {
+
+        if (inputUser === '') {
+            return;
+        }
+
+        if (inputUser !== currentUserState.login) {
+            handleCoderClick({
+                login: inputUser,
+                avatarUrl: '',
+            });
+            return;
+        }
+
+        if (!currentUserState.followingsPage.hasNextPage) {
+            return;
+        }
+
         fetch(`${BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followingsPage.afterPage}`)
         .then(res => res.json())
         .then(data => {
@@ -99,7 +151,7 @@ export default function App() {
                                     }}
                                 >@</span>
                                 <input 
-                                    value={`${currentUserState.login}`} 
+                                    value={`${inputUser}`} 
                                     onChange={handleUserInputChange}
                                     placeholder="Username..."
                                     style={{
@@ -118,7 +170,7 @@ export default function App() {
                                         fontSize: 25,
                                     }}
                                     onClick={fetchData}
-                                    disabled={!currentUserState.followingsPage.hasNextPage || (currentUserState.login === '')}
+                                    disabled={inputUser === ''}
                                 >
                                     GO
                                 </Button>
