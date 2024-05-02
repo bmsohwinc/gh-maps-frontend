@@ -106,3 +106,19 @@ a {
     color-scheme: dark;
   }
 }
+
+.headlist {
+  height: 100%;
+}
+
+.headlist-head {
+  font-weight: bold;
+  height: 30px;
+  text-align: center;
+}
+
+.headlist-children {
+  height: calc(100% - 30px);
+  overflow-y: scroll;
+}
+
