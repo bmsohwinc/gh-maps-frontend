@@ -1,3 +1,6 @@
+export const  numberFormatter = Intl.NumberFormat('en', { notation: 'compact' });
+
+
 export function getInitialUserDataState() : UserDataState {
     return {
         login: '',

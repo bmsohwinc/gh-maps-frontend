@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import { Item } from "./Item";
+import { numberFormatter } from "../utils";
 
 
 export default function Coder(props) {
@@ -33,7 +34,7 @@ export default function Coder(props) {
                     
                 </Grid>
                 <Grid item xs={4} height='100%'>
-                    <h3>{props.followers} Followers</h3>
+                    <h3>{numberFormatter.format(props.followers)} Followers</h3>
                 </Grid>
             </Grid>
             {/* <a

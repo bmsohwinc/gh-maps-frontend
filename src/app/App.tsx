@@ -10,7 +10,7 @@ import { Item } from "./lists/Item";
 import Coder from "./lists/Coder";
 
 import { dummyData } from "./const";
-import { getInitialUserDataState, processors } from "./utils";
+import { getInitialUserDataState, numberFormatter, processors } from "./utils";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
@@ -250,7 +250,7 @@ export default function App() {
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 40px)'>
                         <HeadList
-                            header={`Following (${currentUserState.followingsData.length} / ${currentUserState.totalFollowings})`}
+                            header={`Following (${numberFormatter.format(currentUserState.followingsData.length)} / ${numberFormatter.format(currentUserState.totalFollowings)})`}
                         >
                             {
                                 currentUserState.followingsData.map((following, idx) => (
@@ -265,7 +265,7 @@ export default function App() {
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 40px)'>
                         <HeadList
-                            header={`Followers (${currentUserState.followersData.length} / ${currentUserState.totalFollowers})`}
+                            header={`Followers (${numberFormatter.format(currentUserState.followersData.length)} / ${numberFormatter.format(currentUserState.totalFollowers)})`}
                         >
                             {
                                 currentUserState.followersData.map((follower, idx) => (
