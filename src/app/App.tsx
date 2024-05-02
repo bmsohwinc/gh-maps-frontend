@@ -16,6 +16,8 @@ import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
 
 const BASE_URL = 'http://localhost:3001';
+const FOLLOWINGS_BASE_URL = `${BASE_URL}/followings`;
+const FOLLOWERS_BASE_URL = `${BASE_URL}/followers`;
 
 
 
@@ -59,7 +61,7 @@ export default function App() {
                 return dataStore.get(clickedUser.login);
             });
         } else {
-            fetch(`${BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
+            fetch(`${FOLLOWINGS_BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
@@ -68,10 +70,30 @@ export default function App() {
                         draft.login = clickedUser.login;
                         draft.avatarUrl = data.user.avatarUrl;
                         draft.name = data.user.name;
+                        draft.totalFollowings = data.user.following.totalCount;
                         draft.followingsData = processedData;
                         draft.followingsPage = {
                             afterPage: data.user.following.pageInfo.endCursor,
                             hasNextPage: data.user.following.pageInfo.hasNextPage,
+                        };
+                    });
+
+                    setUniqUsers((draft) => {
+                        processedData.forEach(item => draft.add(item.login));
+                    });
+                });
+            
+            fetch(`${FOLLOWERS_BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const processedData = processors.processFollowers(data.user.followers.nodes);
+                    setCurrentUserState((draft) => {
+                        draft.totalFollowers = data.user.followers.totalCount;
+                        draft.followersData = processedData;
+                        draft.followersPage = {
+                            afterPage: data.user.followers.pageInfo.endCursor,
+                            hasNextPage: data.user.followers.pageInfo.hasNextPage,
                         };
                     });
 
@@ -96,16 +118,14 @@ export default function App() {
             return;
         }
 
-        if (!currentUserState.followingsPage.hasNextPage) {
-            return;
-        }
-
-        fetch(`${BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followingsPage.afterPage}`)
+        if (currentUserState.followingsPage.hasNextPage) {
+            fetch(`${FOLLOWINGS_BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followingsPage.afterPage}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
                 const processedData = processors.processFollowings(data.user.following.nodes);
                 setCurrentUserState((draft) => {
+                    draft.totalFollowings = data.user.following.totalCount;
                     draft.followingsData.push(...processedData);
                     draft.followingsPage = {
                         afterPage: data.user.following.pageInfo.endCursor,
@@ -116,6 +136,28 @@ export default function App() {
                     processedData.forEach(item => draft.add(item.login));
                 });
             });
+        }
+
+        if (currentUserState.followersPage.hasNextPage) {
+            fetch(`${FOLLOWERS_BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followersPage.afterPage}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                const processedData = processors.processFollowers(data.user.followers.nodes);
+                setCurrentUserState((draft) => {
+                    draft.totalFollowers = data.user.followers.totalCount;
+                    draft.followersData.push(...processedData);
+                    draft.followersPage = {
+                        afterPage: data.user.followers.pageInfo.endCursor,
+                        hasNextPage: data.user.followers.pageInfo.hasNextPage,
+                    };
+                });
+                
+                setUniqUsers((draft) => {
+                    processedData.forEach(item => draft.add(item.login));
+                });
+            });
+        }
     }
 
     return (
@@ -208,7 +250,7 @@ export default function App() {
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 40px)'>
                         <HeadList
-                            header='Following'
+                            header={`Following (${currentUserState.followingsData.length} / ${currentUserState.totalFollowings})`}
                         >
                             {
                                 currentUserState.followingsData.map((following, idx) => (
@@ -223,9 +265,17 @@ export default function App() {
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 40px)'>
                         <HeadList
-                            header='Followers'
+                            header={`Followers (${currentUserState.followersData.length} / ${currentUserState.totalFollowers})`}
                         >
-                            {[...Array(10).keys()].map(key => (<Item key={key}>xs=4</Item>))}
+                            {
+                                currentUserState.followersData.map((follower, idx) => (
+                                    <Coder
+                                        onClick={handleCoderClick}
+                                        key={`${follower.login}-${idx}`}
+                                        {...follower}
+                                    />
+                                ))
+                            }
                         </HeadList>
                     </Grid>
                 </Grid>

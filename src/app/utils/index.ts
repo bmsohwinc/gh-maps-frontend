@@ -3,6 +3,8 @@ export function getInitialUserDataState() : UserDataState {
         login: '',
         name: null,
         avatarUrl: '',
+        totalFollowings: 0,
+        totalFollowers: 0,
         followersData: [],
         followingsData: [],
         followingsPage: {
@@ -26,7 +28,7 @@ function processUserFollowings(data) {
 }
 
 function processUserFollowers(data) {
-    return data.data.user.follower.nodes.map(follower => ({
+    return data.map(follower => ({
         login: follower.login,
         name: follower.name,
         avatarUrl: follower.avatarUrl,

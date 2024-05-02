@@ -21,6 +21,8 @@ interface UserDataState {
     login: String,
     name: nString,
     avatarUrl: String,
+    totalFollowings: Number,
+    totalFollowers: Number,
     followingsData: CoderCard[],
     followersData: CoderCard[],
     followingsPage: GHPage,
