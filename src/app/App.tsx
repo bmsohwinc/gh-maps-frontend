@@ -52,7 +52,7 @@ export default function App() {
         }
 
         setInputUser(clickedUser.login);
-        
+
         if (dataStore.has(clickedUser.login)) {
             setCurrentUserState((draft) => {
                 return dataStore.get(clickedUser.login);
@@ -136,7 +136,11 @@ export default function App() {
                     >
                         {
                             recentlyViewed.map((item, idx) => (
-                                <HistoryItem key={`${item.login}-${idx}`} {...item} />
+                                <HistoryItem 
+                                    onClick={handleCoderClick} 
+                                    key={`${item.login}-${idx}`} 
+                                    {...item} 
+                                />
                             ))
                         }
                     </HeadList>
@@ -183,7 +187,11 @@ export default function App() {
                         >
                             {
                                 currentUserState.followingsData.map((following, idx) => (
-                                    <Coder onClick={handleCoderClick} key={`${following.login}-${idx}`} {...following} />
+                                    <Coder 
+                                        onClick={handleCoderClick} 
+                                        key={`${following.login}-${idx}`} 
+                                        {...following} 
+                                    />
                                 ))
                             }
                         </HeadList>

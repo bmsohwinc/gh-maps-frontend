@@ -3,9 +3,15 @@ import { Item } from "./Item";
 
 export default function HistoryItem(props : HistoryCard) {
     return (
-        <Item style={{
-            textAlign: 'left',
-        }}>
+        <Item 
+            onClick={() => props.onClick({
+                login: props.login,
+                avatarUrl: props.avatarUrl,
+            })}
+            style={{
+                textAlign: 'left',
+            }}
+        >
             <Grid item xs={12} container spacing={2} height='100%'>
                 <Grid item xs={2} height='100%'>
                     <Avatar alt={props.login} src={props.avatarUrl} sx={{width: 24, height: 24}} />
