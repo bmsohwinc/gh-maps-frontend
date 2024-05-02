@@ -1,41 +1,37 @@
 import { Grid } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import HeadList from "./HeadList";
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+
+import { Item } from "./lists/Item";
+import Coder from "./lists/Coder";
+
+import { dummyData } from "./const";
+import { processors } from "./utils";
 
 
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    margin: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
 
 export default function App() {
-    const username: string = 'bmsohwinc';
+    const username: string = 'karpathy';
+    const followings = processors.processFollowings(dummyData);
+
     return (
         <div style={{
             width: '100%',
             // backgroundColor: "cornflowerblue",
             height: '100%',
         }}>
-            <AppBar 
-                position="static" 
+            <AppBar
+                position="static"
                 color="info"
                 sx={{
                     boxShadow: 1,
                     borderRadius: 2,
                     height: 64,
-                  }}
+                }}
             >
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -84,27 +80,11 @@ export default function App() {
                         <HeadList
                             header='Following'
                         >
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
-                            <Item>xs=4</Item>
+                            {
+                                followings.map((following, idx) => (
+                                    <Coder key={`${following.login}-${idx}`} {...following} />
+                                ))
+                            }
                         </HeadList>
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 30px)'>
