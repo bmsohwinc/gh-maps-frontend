@@ -26,6 +26,7 @@ export default function App() {
     const [currentUserState, setCurrentUserState] = useImmer<UserDataState>(getInitialUserDataState());
     const [recentlyViewed, setRecentlyViewed] = useImmer<HistoryCard[]>([]);
     const [dataStore, setDataStore] = useImmer<Map<String, UserDataState>>(new Map<String, UserDataState>());
+    const [uniqUsers, setUniqUsers] = useImmer<Set<String>>(new Set<String>());
 
     function handleUserInputChange(e) {
         setInputUser(e.target.value.trim());
@@ -59,20 +60,25 @@ export default function App() {
             });
         } else {
             fetch(`${BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                setCurrentUserState((draft) => {
-                    draft.login = clickedUser.login;
-                    draft.avatarUrl = data.user.avatarUrl;
-                    draft.name = data.user.name;
-                    draft.followingsData = processors.processFollowings(data.user.following.nodes);
-                    draft.followingsPage = {
-                        afterPage: data.user.following.pageInfo.endCursor,
-                        hasNextPage: data.user.following.pageInfo.hasNextPage,
-                    };
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const processedData = processors.processFollowings(data.user.following.nodes);
+                    setCurrentUserState((draft) => {
+                        draft.login = clickedUser.login;
+                        draft.avatarUrl = data.user.avatarUrl;
+                        draft.name = data.user.name;
+                        draft.followingsData = processedData;
+                        draft.followingsPage = {
+                            afterPage: data.user.following.pageInfo.endCursor,
+                            hasNextPage: data.user.following.pageInfo.hasNextPage,
+                        };
+                    });
+
+                    setUniqUsers((draft) => {
+                        processedData.forEach(item => draft.add(item.login));
+                    });
                 });
-            });
         }
     }
 
@@ -95,17 +101,21 @@ export default function App() {
         }
 
         fetch(`${BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followingsPage.afterPage}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            setCurrentUserState((draft) => {
-                draft.followingsData.push(...processors.processFollowings(data.user.following.nodes));
-                draft.followingsPage = {
-                    afterPage: data.user.following.pageInfo.endCursor,
-                    hasNextPage: data.user.following.pageInfo.hasNextPage,
-                };
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                const processedData = processors.processFollowings(data.user.following.nodes);
+                setCurrentUserState((draft) => {
+                    draft.followingsData.push(...processedData);
+                    draft.followingsPage = {
+                        afterPage: data.user.following.pageInfo.endCursor,
+                        hasNextPage: data.user.following.pageInfo.hasNextPage,
+                    };
+                });
+                setUniqUsers((draft) => {
+                    processedData.forEach(item => draft.add(item.login));
+                });
             });
-        });
     }
 
     return (
@@ -131,19 +141,34 @@ export default function App() {
             </AppBar>
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
                 <Grid item xs={3} height='100%'>
-                    <HeadList
-                        header='Recently Viewed'
-                    >
-                        {
-                            recentlyViewed.map((item, idx) => (
-                                <HistoryItem 
-                                    onClick={handleCoderClick} 
-                                    key={`${item.login}-${idx}`} 
-                                    {...item} 
-                                />
-                            ))
-                        }
-                    </HeadList>
+                    <Grid item xs={9} container spacing={2} height='100%'>
+                        <Grid item xs={12} height='77px'>
+                            <div
+                                style={{
+                                    // fontSize: 5
+                                    textAlign: 'center'
+                                }}
+                            >
+                                Total profiles browsed<br/> 
+                                <h1>{uniqUsers.size}</h1>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} height='calc(100% - 40px)'>
+                            <HeadList
+                                header='History'
+                            >
+                                {
+                                    recentlyViewed.map((item, idx) => (
+                                        <HistoryItem
+                                            onClick={handleCoderClick}
+                                            key={`${item.login}-${idx}`}
+                                            {...item}
+                                        />
+                                    ))
+                                }
+                            </HeadList>
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <Grid item xs={9} container spacing={2} height='100%'>
                     <Grid item xs={12}>
@@ -154,8 +179,8 @@ export default function App() {
                                         fontSize: 50
                                     }}
                                 >@</span>
-                                <input 
-                                    value={`${inputUser}`} 
+                                <input
+                                    value={`${inputUser}`}
                                     onChange={handleUserInputChange}
                                     placeholder="Username..."
                                     style={{
@@ -167,9 +192,9 @@ export default function App() {
                                 />
                             </Grid>
                             <Grid item xs={2}>
-                                <Button 
-                                    color='success' 
-                                    variant='contained' 
+                                <Button
+                                    color='success'
+                                    variant='contained'
                                     sx={{
                                         fontSize: 25,
                                     }}
@@ -181,22 +206,22 @@ export default function App() {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={6} height='calc(100% - 30px)'>
+                    <Grid item xs={6} height='calc(100% - 40px)'>
                         <HeadList
                             header='Following'
                         >
                             {
                                 currentUserState.followingsData.map((following, idx) => (
-                                    <Coder 
-                                        onClick={handleCoderClick} 
-                                        key={`${following.login}-${idx}`} 
-                                        {...following} 
+                                    <Coder
+                                        onClick={handleCoderClick}
+                                        key={`${following.login}-${idx}`}
+                                        {...following}
                                     />
                                 ))
                             }
                         </HeadList>
                     </Grid>
-                    <Grid item xs={6} height='calc(100% - 30px)'>
+                    <Grid item xs={6} height='calc(100% - 40px)'>
                         <HeadList
                             header='Followers'
                         >
