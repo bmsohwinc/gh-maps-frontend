@@ -1,5 +1,23 @@
+export function getInitialUserDataState() : UserDataState {
+    return {
+        login: '',
+        name: null,
+        avatarUrl: '',
+        followersData: [],
+        followingsData: [],
+        followingsPage: {
+            afterPage: '',
+            hasNextPage: true,
+        },
+        followersPage: {
+            afterPage: '',
+            hasNextPage: true,
+        }
+    };
+}
+
 function processUserFollowings(data) {
-    return data.data.user.following.nodes.map(following => ({
+    return data.map(following => ({
         login: following.login,
         name: following.name,
         avatarUrl: following.avatarUrl,

@@ -6,7 +6,7 @@ import { Item } from "./Item";
 export default function Coder(props) {
     // login, name, avatar, followers
     return (
-        <Item>
+        <Item onClick={() => props.onClick({login: props.login, avatarUrl: props.avatarUrl})}>
             <Grid item xs={12} container spacing={2} height='100%'>
                 <Grid item xs={8} height='100%'>
                     <Grid item xs={12} container spacing={2} height='100%'>
