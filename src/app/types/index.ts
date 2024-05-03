@@ -1,28 +1,29 @@
-type nString = null | String;
+type nString = null | string;
 
 interface HistoryCard {
-    login: String,
-    avatarUrl: String,
+    login: string,
+    avatarUrl: string,
+    onClick?: (any) => any,
 }
 
 interface GHPage {
     afterPage: nString,
-    hasNextPage: Boolean,
+    hasNextPage: boolean,
 }
 
 interface CoderCard {
-    login: String,
+    login: string,
     name: nString,
-    avatarUrl: String,
-    followers: Number,
+    avatarUrl: string,
+    followers: number,
 }
 
 interface UserDataState {
-    login: String,
+    login: string,
     name: nString,
-    avatarUrl: String,
-    totalFollowings: Number,
-    totalFollowers: Number,
+    avatarUrl: string,
+    totalFollowings: number,
+    totalFollowers: number,
     followingsData: CoderCard[],
     followersData: CoderCard[],
     followingsPage: GHPage,

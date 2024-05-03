@@ -17,11 +17,11 @@ const FOLLOWERS_BASE_URL = `${BASE_URL}/followers`;
 
 export default function App() {
 
-    const [inputUser, setInputUser] = useImmer<String>('');
+    const [inputUser, setInputUser] = useImmer<string>('');
     const [currentUserState, setCurrentUserState] = useImmer<UserDataState>(getInitialUserDataState());
     const [recentlyViewed, setRecentlyViewed] = useImmer<HistoryCard[]>([]);
-    const [dataStore, setDataStore] = useImmer<Map<String, UserDataState>>(new Map<String, UserDataState>());
-    const [uniqUsers, setUniqUsers] = useImmer<Set<String>>(new Set<String>());
+    const [dataStore, setDataStore] = useImmer<Map<string, UserDataState>>(new Map<string, UserDataState>());
+    const [uniqUsers, setUniqUsers] = useImmer<Set<string>>(new Set<string>());
     const [openToast, setOpenToast] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
