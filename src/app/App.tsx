@@ -10,7 +10,7 @@ import { Item } from "./lists/Item";
 import Coder from "./lists/Coder";
 
 import { dummyData } from "./const";
-import { getInitialUserDataState, numberFormatter, processors } from "./utils";
+import { getInitialUserDataState, numberFormatter } from "./utils";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
@@ -71,24 +71,28 @@ export default function App() {
             });
         } else {
             fetch(`${FOLLOWINGS_BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
-                .then(res => res.json())
-                .then(data => {
+                .then(res => {
+                    const data = res.json();
+                    if (!res.ok) {
+                        throw new Error('User not found', { cause: data });
+                    } else {
+                        return data;
+                    }
+                })
+                .then((jsonData) => {
+                    const { data } = jsonData;
                     console.log(data);
-                    const processedData = processors.processFollowings(data.user.following.nodes);
                     setCurrentUserState((draft) => {
                         draft.login = clickedUser.login;
-                        draft.avatarUrl = data.user.avatarUrl;
-                        draft.name = data.user.name;
-                        draft.totalFollowings = data.user.following.totalCount;
-                        draft.followingsData = processedData;
-                        draft.followingsPage = {
-                            afterPage: data.user.following.pageInfo.endCursor,
-                            hasNextPage: data.user.following.pageInfo.hasNextPage,
-                        };
+                        draft.avatarUrl = data.avatarUrl;
+                        draft.name = data.name;
+                        draft.totalFollowings = data.totalFollowings;
+                        draft.followingsData = data.followingsData;
+                        draft.followingsPage = data.followingsPage;
                     });
 
                     setUniqUsers((draft) => {
-                        processedData.forEach(item => draft.add(item.login));
+                        data.followingsData.forEach(item => draft.add(item.login));
                     });
                 })
                 .catch((err) => {
@@ -96,23 +100,27 @@ export default function App() {
                     console.log(err);
                     setOpenToast(true);
                 });
-            
+
             fetch(`${FOLLOWERS_BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
-                .then(res => res.json())
-                .then(data => {
+                .then(res => {
+                    const data = res.json();
+                    if (!res.ok) {
+                        throw new Error('User not found', { cause: data });
+                    } else {
+                        return data;
+                    }
+                })
+                .then((jsonData) => {
+                    const { data } = jsonData;
                     console.log(data);
-                    const processedData = processors.processFollowers(data.user.followers.nodes);
                     setCurrentUserState((draft) => {
-                        draft.totalFollowers = data.user.followers.totalCount;
-                        draft.followersData = processedData;
-                        draft.followersPage = {
-                            afterPage: data.user.followers.pageInfo.endCursor,
-                            hasNextPage: data.user.followers.pageInfo.hasNextPage,
-                        };
+                        draft.totalFollowers = data.totalFollowers;
+                        draft.followersData = data.followersData;
+                        draft.followersPage = data.followersPage;
                     });
 
                     setUniqUsers((draft) => {
-                        processedData.forEach(item => draft.add(item.login));
+                        data.followersData.forEach(item => draft.add(item.login));
                     });
                 })
                 .catch((err) => {
@@ -139,43 +147,51 @@ export default function App() {
 
         if (currentUserState.followingsPage.hasNextPage) {
             fetch(`${FOLLOWINGS_BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followingsPage.afterPage}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                const processedData = processors.processFollowings(data.user.following.nodes);
-                setCurrentUserState((draft) => {
-                    draft.totalFollowings = data.user.following.totalCount;
-                    draft.followingsData.push(...processedData);
-                    draft.followingsPage = {
-                        afterPage: data.user.following.pageInfo.endCursor,
-                        hasNextPage: data.user.following.pageInfo.hasNextPage,
-                    };
+                .then(res => {
+                    const data = res.json();
+                    if (!res.ok) {
+                        throw new Error('User not found', { cause: data });
+                    } else {
+                        return data;
+                    }
+                })
+                .then((jsonData) => {
+                    const { data } = jsonData;
+                    console.log(data);
+                    setCurrentUserState((draft) => {
+                        draft.totalFollowings = data.totalFollowings;
+                        draft.followingsData.push(...data.followingsData);
+                        draft.followingsPage = data.followingsPage;
+                    });
+                    setUniqUsers((draft) => {
+                        data.followingsData.forEach(item => draft.add(item.login));
+                    });
                 });
-                setUniqUsers((draft) => {
-                    processedData.forEach(item => draft.add(item.login));
-                });
-            });
         }
 
         if (currentUserState.followersPage.hasNextPage) {
             fetch(`${FOLLOWERS_BASE_URL}/?login=${currentUserState.login}&afterPage=${currentUserState.followersPage.afterPage}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                const processedData = processors.processFollowers(data.user.followers.nodes);
-                setCurrentUserState((draft) => {
-                    draft.totalFollowers = data.user.followers.totalCount;
-                    draft.followersData.push(...processedData);
-                    draft.followersPage = {
-                        afterPage: data.user.followers.pageInfo.endCursor,
-                        hasNextPage: data.user.followers.pageInfo.hasNextPage,
-                    };
+                .then(res => {
+                    const data = res.json();
+                    if (!res.ok) {
+                        throw new Error('User not found', { cause: data });
+                    } else {
+                        return data;
+                    }
+                })
+                .then((jsonData) => {
+                    const { data } = jsonData;
+                    console.log(data);
+                    setCurrentUserState((draft) => {
+                        draft.totalFollowers = data.totalFollowers;
+                        draft.followersData.push(...data.followersData);
+                        draft.followersPage = data.followersPage;
+                    });
+
+                    setUniqUsers((draft) => {
+                        data.followersData.forEach(item => draft.add(item.login));
+                    });
                 });
-                
-                setUniqUsers((draft) => {
-                    processedData.forEach(item => draft.add(item.login));
-                });
-            });
         }
     }
 
@@ -195,7 +211,7 @@ export default function App() {
             >
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Git Hub Network Visualizer
+                        GitHub Network Visualizer
                     </Typography>
                     <Button color="inherit">Star on GitHub</Button>
                 </Toolbar>
@@ -204,7 +220,7 @@ export default function App() {
                     autoHideDuration={3000}
                     onClose={handleToastClose}
                     message="User doesn't exist!"
-                    anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 />
             </AppBar>
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
@@ -217,7 +233,7 @@ export default function App() {
                                     textAlign: 'center'
                                 }}
                             >
-                                Total profiles browsed<br/> 
+                                Total profiles browsed<br />
                                 <h1>{uniqUsers.size}</h1>
                             </div>
                         </Grid>
