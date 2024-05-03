@@ -8,4 +8,14 @@ export const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    scrollbarWidth: 'thin',
+    '@global': {
+        '*': {
+          'scrollbar-width': 'thin',
+        },
+        '*::-webkit-scrollbar': {
+          width: '4px',
+          height: '4px',
+        }
+      }
 }));

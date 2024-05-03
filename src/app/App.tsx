@@ -200,7 +200,7 @@ export default function App() {
             width: '100%',
             height: '100%',
         }}>
-            <AppBar
+            {/* <AppBar
                 position="static"
                 color="info"
                 sx={{
@@ -211,9 +211,27 @@ export default function App() {
             >
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        GitHub Network Visualizer
+                        Search GitHub Connections of user @
+                        <input
+                            value={`${inputUser}`}
+                            onChange={handleUserInputChange}
+                            placeholder="Username..."
+                            style={{
+                                backgroundColor: 'transparent',
+                                border: '0px',
+                                outlineColor: 'transparent',
+                            }}
+                        />
+                        <Button
+                            color='success'
+                            variant='contained'
+                            onClick={fetchData}
+                            disabled={inputUser === ''}
+                        >
+                            GO!
+                        </Button>
                     </Typography>
-                    <Button color="inherit">Star on GitHub</Button>
+                    <div>Hi!</div>
                 </Toolbar>
                 <Snackbar
                     open={openToast}
@@ -222,35 +240,56 @@ export default function App() {
                     message="User doesn't exist!"
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 />
-            </AppBar>
+            </AppBar> */}
+            <Snackbar
+                open={openToast}
+                autoHideDuration={3000}
+                onClose={handleToastClose}
+                message="User doesn't exist!"
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            />
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
                 <Grid item xs={3} height='100%'>
                     <Grid item xs={9} container spacing={2} height='100%'>
                         <Grid item xs={12} height='77px'>
-                            <div
-                                style={{
-                                    // fontSize: 5
-                                    textAlign: 'center'
+                            <Item
+                                elevation={3}
+                                sx={{
+                                    height: '100%',
                                 }}
                             >
-                                Total profiles browsed<br />
-                                <h1>{uniqUsers.size}</h1>
-                            </div>
+                                <div
+                                    style={{
+                                        // fontSize: 5
+                                        textAlign: 'center'
+                                    }}
+                                >
+                                    Total profiles browsed<br />
+                                    <h1>{uniqUsers.size}</h1>
+                                </div>
+                            </Item>
                         </Grid>
                         <Grid item xs={12} height='calc(100% - 40px)'>
-                            <HeadList
-                                header='History'
+                            <Item
+                                elevation={3}
+                                sx={{
+                                    height: '100%',
+                                }}
                             >
-                                {
-                                    recentlyViewed.map((item, idx) => (
-                                        <HistoryItem
-                                            onClick={handleCoderClick}
-                                            key={`${item.login}-${idx}`}
-                                            {...item}
-                                        />
-                                    ))
-                                }
-                            </HeadList>
+                                <HeadList
+                                    header='History'
+                                >
+                                    {
+                                        recentlyViewed.map((item, idx) => (
+                                            <HistoryItem
+                                                onClick={handleCoderClick}
+                                                key={`${item.login}-${idx}`}
+                                                {...item}
+                                            />
+                                        ))
+                                    }
+                                </HeadList>
+                            </Item>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -291,34 +330,48 @@ export default function App() {
                         </Grid>
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 40px)'>
-                        <HeadList
-                            header={`Following (${numberFormatter.format(currentUserState.followingsData.length)} / ${numberFormatter.format(currentUserState.totalFollowings)})`}
+                        <Item
+                            elevation={3}
+                            sx={{
+                                height: '100%',
+                            }}
                         >
-                            {
-                                currentUserState.followingsData.map((following, idx) => (
-                                    <Coder
-                                        onClick={handleCoderClick}
-                                        key={`${following.login}-${idx}`}
-                                        {...following}
-                                    />
-                                ))
-                            }
-                        </HeadList>
+                            <HeadList
+                                header={`Following (${numberFormatter.format(currentUserState.followingsData.length)} / ${numberFormatter.format(currentUserState.totalFollowings)})`}
+                            >
+                                {
+                                    currentUserState.followingsData.map((following, idx) => (
+                                        <Coder
+                                            onClick={handleCoderClick}
+                                            key={`${following.login}-${idx}`}
+                                            {...following}
+                                        />
+                                    ))
+                                }
+                            </HeadList>
+                        </Item>
                     </Grid>
                     <Grid item xs={6} height='calc(100% - 40px)'>
-                        <HeadList
-                            header={`Followers (${numberFormatter.format(currentUserState.followersData.length)} / ${numberFormatter.format(currentUserState.totalFollowers)})`}
+                        <Item
+                            elevation={3}
+                            sx={{
+                                height: '100%',
+                            }}
                         >
-                            {
-                                currentUserState.followersData.map((follower, idx) => (
-                                    <Coder
-                                        onClick={handleCoderClick}
-                                        key={`${follower.login}-${idx}`}
-                                        {...follower}
-                                    />
-                                ))
-                            }
-                        </HeadList>
+                            <HeadList
+                                header={`Followers (${numberFormatter.format(currentUserState.followersData.length)} / ${numberFormatter.format(currentUserState.totalFollowers)})`}
+                            >
+                                {
+                                    currentUserState.followersData.map((follower, idx) => (
+                                        <Coder
+                                            onClick={handleCoderClick}
+                                            key={`${follower.login}-${idx}`}
+                                            {...follower}
+                                        />
+                                    ))
+                                }
+                            </HeadList>
+                        </Item>
                     </Grid>
                 </Grid>
             </Grid>
