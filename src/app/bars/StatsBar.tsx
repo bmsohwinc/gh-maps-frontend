@@ -9,7 +9,7 @@ export default function StatsBar(props) {
 
     return (
         <Grid item container spacing={2} marginTop={0}>
-            <Grid item xs={3} height='100%'>
+            <Grid item xs={2.5} height='100%'>
                 <Item
                     elevation={3}
                     sx={{
@@ -100,7 +100,7 @@ export default function StatsBar(props) {
                 </Item>
             </Grid>
 
-            <Grid item xs={2} height='100%' sx={{ textAlign: 'right'}}>
+            <Grid item xs={2.5} height='100%' sx={{ textAlign: 'right'}}>
                 <Button
                     onClick={props.fetchData} 
                     size="large" 

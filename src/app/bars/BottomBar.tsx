@@ -17,7 +17,7 @@ export default function BottomBar(props) {
 
     return (
         <Grid item container spacing={2} height='calc(100% - 125px)'>
-            <Grid item xs={3} height='100%'>
+            <Grid item xs={2.5} height='100%'>
                 <Item
                     elevation={3}
                     sx={{
@@ -38,7 +38,8 @@ export default function BottomBar(props) {
                     </HeadList>
                 </Item>
             </Grid>
-            <Grid item xs={4.5} height='100%'>
+
+            <Grid item xs={4.75} height='100%'>
                 <Item
                     elevation={3}
                     sx={{
@@ -61,7 +62,8 @@ export default function BottomBar(props) {
                     </HeadList>
                 </Item>
             </Grid>
-            <Grid item xs={4.5} height='100%'>
+
+            <Grid item xs={4.75} height='100%'>
                 <Item
                     elevation={3}
                     sx={{
