@@ -141,7 +141,7 @@ a {
 }
 
 .headlist-head {
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 30px;
   height: 40px;
   text-align: center;
