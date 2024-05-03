@@ -1,10 +1,18 @@
-import { Grid, Snackbar } from "@mui/material";
+import { Grid, IconButton, Snackbar } from "@mui/material";
 import HeadList from "./HeadList";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import SearchIcon from '@mui/icons-material/Search';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Avatar from '@mui/material/Avatar';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import MenuIcon from '@mui/icons-material/Menu';
+import DirectionsIcon from '@mui/icons-material/Directions';
+
 
 import { Item } from "./lists/Item";
 import Coder from "./lists/Coder";
@@ -14,6 +22,8 @@ import { getInitialUserDataState, numberFormatter } from "./utils";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
+
+
 
 const BASE_URL = 'http://localhost:3001';
 const FOLLOWINGS_BASE_URL = `${BASE_URL}/followings`;
@@ -241,6 +251,81 @@ export default function App() {
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 />
             </AppBar> */}
+            {/* <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}> */}
+            <Grid container spacing={2}>
+                <Grid item xs={2} height='100%'>
+                    <b style={{ fontSize: 25 }} >gh-navigator</b>
+                </Grid>
+                <Grid item xs={8} height='100%' sx={{
+                    textAlign: 'center',
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}>
+                    <Paper
+                        component="form"
+                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+                    >
+                        <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            placeholder="Look up a GitHub user..."
+                            inputProps={{ 'aria-label': 'search google maps' }}
+                            value={inputUser}
+                            onChange={handleUserInputChange}
+                        />
+                        <IconButton 
+                            type="button" 
+                            sx={{ p: '10px' }}
+                            aria-label="search"
+                            onClick={fetchData}
+                        >
+                            <SearchIcon />
+                        </IconButton>
+                    </Paper>
+                    {/* <input
+                        value={`${inputUser}`}
+                        onChange={handleUserInputChange}
+                        placeholder="Search for a GitHub user"
+                        style={{
+                            fontSize: 25,
+                            // backgroundColor: 'transparent',
+                            border: '0px',
+                            borderRadius: '5px',
+                            padding: 4,
+                            outlineColor: 'transparent',
+                        }}
+                    />
+                    &nbsp;
+                    <IconButton
+                        onClick={fetchData}
+                        size="medium"
+                        disabled={inputUser === ''}
+                        color="primary"
+                        sx={{
+                            marginTop: -1,
+                        }}
+                    >
+                        <SearchIcon />
+                    </IconButton> */}
+                    {/* <Button
+                        color='success'
+                        size="small"
+                        variant='contained'
+                        sx={{
+                            fontSize: 12,
+                        }}
+                        onClick={fetchData}
+                        disabled={inputUser === ''}
+                    >
+                        GO
+                    </Button> */}
+                </Grid>
+                <Grid item xs={2} height='100%' sx={{ textAlign: 'right', fontSize: 25 }}>
+                    <a href="https://github.com/bmsohwinc/gh-maps-frontend" target="_blank">
+                        <GitHubIcon />
+                    </a>
+                </Grid>
+            </Grid>
+            {/* </Typography> */}
             <Snackbar
                 open={openToast}
                 autoHideDuration={3000}

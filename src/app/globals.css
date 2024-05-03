@@ -73,6 +73,10 @@
   }
 }
 
+input:placeholder-shown {
+  font-style: italic;
+}
+
 /* * {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary) var(--primary);
