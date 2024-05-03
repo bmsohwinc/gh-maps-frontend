@@ -1,27 +1,6 @@
-import { Grid, IconButton, Snackbar } from "@mui/material";
-import HeadList from "./HeadList";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import SearchIcon from '@mui/icons-material/Search';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import Avatar from '@mui/material/Avatar';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
-import MenuIcon from '@mui/icons-material/Menu';
-import DirectionsIcon from '@mui/icons-material/Directions';
-
-
-import { Item } from "./lists/Item";
-import Coder from "./lists/Coder";
-
-import { dummyData } from "./const";
-import { getInitialUserDataState, numberFormatter } from "./utils";
+import { getInitialUserDataState } from "./utils";
 import { useState } from "react";
 import { useImmer } from "use-immer";
-import HistoryItem from "./lists/HistoryItem";
 import TopBar from "./bars/TopBar";
 import StatsBar from "./bars/StatsBar";
 import BottomBar from "./bars/BottomBar";

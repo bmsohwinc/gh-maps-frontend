@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Divider, Grid, Stack } from "@mui/material";
 import { Item } from "../lists/Item";
 import ShareIcon from '@mui/icons-material/Share';
 import { numberFormatter } from "../utils";

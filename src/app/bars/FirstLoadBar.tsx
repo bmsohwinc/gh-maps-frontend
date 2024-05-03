@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import { Item } from "../lists/Item";
 
 export default function FirsLoadBar(props) {
     return (

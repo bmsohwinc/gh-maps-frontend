@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import { Item } from "./Item";
 import { numberFormatter } from "../utils";
