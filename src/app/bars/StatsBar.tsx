@@ -8,7 +8,7 @@ export default function StatsBar(props) {
     const { uniqUsers } = props;
 
     return (
-        <Grid container spacing={2}>
+        <Grid item container spacing={2} marginTop={0}>
             <Grid item xs={3} height='100%'>
                 <Item
                     elevation={3}
@@ -23,7 +23,7 @@ export default function StatsBar(props) {
                             textAlign: 'center',
                         }}
                     >
-                        Total profiles browsed<br />
+                        Total profiles fetched<br />
                         <h1>{uniqUsers.size}</h1>
                         <Stack
                             direction="row"

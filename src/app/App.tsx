@@ -24,6 +24,7 @@ import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
 import TopBar from "./bars/TopBar";
 import StatsBar from "./bars/StatsBar";
+import BottomBar from "./bars/BottomBar";
 
 
 
@@ -228,6 +229,15 @@ export default function App() {
                 totalFollowings={currentUserState.totalFollowings}
                 totalFollowers={currentUserState.totalFollowers}
                 fetchData={fetchData}
+            />
+
+            <BottomBar
+                recentlyViewed={recentlyViewed}
+                followingsData={currentUserState.followingsData}
+                followersData={currentUserState.followersData}
+                totalFollowings={currentUserState.totalFollowings}
+                totalFollowers={currentUserState.totalFollowers}
+                handleCoderClick={handleCoderClick}
             />
 
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
