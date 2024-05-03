@@ -37,15 +37,6 @@ export default function Coder(props) {
                     <h3>{numberFormatter.format(props.followers)} Followers</h3>
                 </Grid>
             </Grid>
-            {/* <a
-                href={`https://github.com/${props.login}`} 
-                target="_blank"
-            >
-                <Avatar alt={props.login} src={props.avatarUrl} />
-            </a>
-            <span>{props.login}</span>
-            <span> &middot; {props.name}</span> */}
-            
         </Item>
     );
 }

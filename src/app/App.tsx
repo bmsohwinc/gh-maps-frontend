@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Snackbar } from "@mui/material";
 import HeadList from "./HeadList";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -29,6 +29,15 @@ export default function App() {
     const [recentlyViewed, setRecentlyViewed] = useImmer<HistoryCard[]>([]);
     const [dataStore, setDataStore] = useImmer<Map<String, UserDataState>>(new Map<String, UserDataState>());
     const [uniqUsers, setUniqUsers] = useImmer<Set<String>>(new Set<String>());
+    const [openToast, setOpenToast] = useState(false);
+
+    const handleToastClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenToast(false);
+    };
 
     function handleUserInputChange(e) {
         setInputUser(e.target.value.trim());
@@ -81,6 +90,11 @@ export default function App() {
                     setUniqUsers((draft) => {
                         processedData.forEach(item => draft.add(item.login));
                     });
+                })
+                .catch((err) => {
+                    setInputUser(currentUserState.login);
+                    console.log(err);
+                    setOpenToast(true);
                 });
             
             fetch(`${FOLLOWERS_BASE_URL}/?login=${clickedUser.login}&afterPage=null`)
@@ -100,6 +114,11 @@ export default function App() {
                     setUniqUsers((draft) => {
                         processedData.forEach(item => draft.add(item.login));
                     });
+                })
+                .catch((err) => {
+                    setInputUser(currentUserState.login);
+                    console.log(err);
+                    setOpenToast(true);
                 });
         }
     }
@@ -180,6 +199,13 @@ export default function App() {
                     </Typography>
                     <Button color="inherit">Star on GitHub</Button>
                 </Toolbar>
+                <Snackbar
+                    open={openToast}
+                    autoHideDuration={3000}
+                    onClose={handleToastClose}
+                    message="User doesn't exist!"
+                    anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+                />
             </AppBar>
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
                 <Grid item xs={3} height='100%'>
