@@ -48,7 +48,7 @@ export default function BottomBar(props) {
                     }}
                 >
                     <HeadList
-                        header={`Following (${numberFormatter.format(followingsData.length)} / ${numberFormatter.format(totalFollowings)})`}
+                        header={`Following (showing ${numberFormatter.format(followingsData.length)} / ${numberFormatter.format(totalFollowings)})`}
                     >
                         {
                             followingsData.map((following, idx) => (
@@ -72,7 +72,7 @@ export default function BottomBar(props) {
                     }}
                 >
                     <HeadList
-                        header={`Followers (${numberFormatter.format(followersData.length)} / ${numberFormatter.format(totalFollowers)})`}
+                        header={`Followers (showing ${numberFormatter.format(followersData.length)} / ${numberFormatter.format(totalFollowers)})`}
                     >
                         {
                             followersData.map((follower, idx) => (

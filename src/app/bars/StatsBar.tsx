@@ -34,7 +34,7 @@ export default function StatsBar(props) {
                                 justifyContent: 'center',
                             }}
                         >
-                            <Typography variant="p">Share these profiles!</Typography>
+                            <p>Share these profiles!</p>
                             <ShareIcon />
                         </Stack>
                     </div>
@@ -63,12 +63,12 @@ export default function StatsBar(props) {
                                 <div style={{
                                     textAlign: 'left',
                                 }}>
-                                    <Typography variant="h4">
+                                    <h1>
                                         <a href={`https://github.com/${props.login}`} target="_blank">
                                             @{props.login}
                                         </a>
-                                    </Typography>
-                                    <Typography variant="h6">{props.name}</Typography>
+                                    </h1>
+                                    <p>{props.name}</p>
                                 </div>
                             </Stack>
                         </Grid>
@@ -83,15 +83,19 @@ export default function StatsBar(props) {
                                 <Divider sx={{ height: 72, m: 0.5 }} orientation="vertical" />
                                 <div style={{
                                     // width: 80
+                                    minWidth: 80,
                                 }}>
-                                    <Typography variant="h4">{numberFormatter.format(props.totalFollowings)}</Typography>
-                                    <Typography variant="h6">Followings</Typography>
+                                    <h1>{numberFormatter.format(props.totalFollowings)}</h1>
+                                    <p>Total</p>
+                                    <p>Followings</p>
                                 </div>
                                 <div style={{
                                     // width: 80
+                                    minWidth: 80,
                                 }}>
-                                    <Typography variant="h4">{numberFormatter.format(props.totalFollowers)}</Typography>
-                                    <Typography variant="h6">Followers</Typography>
+                                    <h1>{numberFormatter.format(props.totalFollowers)}</h1>
+                                    <p>Total</p>
+                                    <p>Followers</p>
                                 </div>
                             </Stack>
                         </Grid>
@@ -100,13 +104,13 @@ export default function StatsBar(props) {
                 </Item>
             </Grid>
 
-            <Grid item xs={2.5} height='100%' sx={{ textAlign: 'right'}}>
+            <Grid item xs={2.5} height='100%' sx={{ textAlign: 'right' }}>
                 <Button
-                    onClick={props.fetchData} 
-                    size="large" 
-                    style={{ 
-                        textTransform: 'none' 
-                    }} 
+                    onClick={props.fetchData}
+                    size="large"
+                    style={{
+                        textTransform: 'none'
+                    }}
                     sx={{
                         height: 100,
                         marginTop: 1,

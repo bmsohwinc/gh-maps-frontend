@@ -10,7 +10,7 @@ export default function Coder(props) {
         <Item
             onClick={() => props.onClick({ login: props.login, avatarUrl: props.avatarUrl })}
             sx={{
-                width: '97%',
+                width: '96%',
                 cursor: 'pointer',
             }}
         >
@@ -27,12 +27,12 @@ export default function Coder(props) {
                         <div style={{
                             textAlign: 'left',
                         }}>
-                            <Typography variant="h6">
+                            <h3>
                                 <a href={`https://github.com/${props.login}`} target="_blank">
                                     @{props.login}
                                 </a>
-                            </Typography>
-                            {props.name ?? <div>&middot;</div>}
+                            </h3>
+                            <p>{props.name ?? <div>&middot;</div>}</p>
                         </div>
                     </Stack>
                 </Grid>
@@ -43,16 +43,16 @@ export default function Coder(props) {
                         gap={2}
                     >
                         <div>
-                            <Typography variant="h6">
+                            <h3>
                                 {numberFormatter.format(props.followings)}
-                            </Typography>
-                            Followings
+                            </h3>
+                            <p style={{marginTop: 2}}>Followings</p>
                         </div>
                         <div>
-                            <Typography variant="h6">
+                            <h3>
                                 {numberFormatter.format(props.followers)}
-                            </Typography>
-                            Followers
+                            </h3>
+                            <p style={{marginTop: 2}}>Followers</p>
                         </div>
                     </Stack>
                 </Grid>
