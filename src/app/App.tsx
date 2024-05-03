@@ -23,6 +23,7 @@ import { useState } from "react";
 import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
 import TopBar from "./bars/TopBar";
+import StatsBar from "./bars/StatsBar";
 
 
 
@@ -211,14 +212,24 @@ export default function App() {
             width: '100%',
             height: '100%',
         }}>
-            <TopBar 
+            <TopBar
                 inputUser={inputUser}
                 handleUserInputChange={handleUserInputChange}
                 fetchData={fetchData}
                 openToast={openToast}
                 handleToastClose={handleToastClose}
             />
-            
+
+            <StatsBar
+                uniqUsers={uniqUsers}
+                login={currentUserState.login}
+                name={currentUserState.name}
+                avatarUrl={currentUserState.avatarUrl}
+                totalFollowings={currentUserState.totalFollowings}
+                totalFollowers={currentUserState.totalFollowers}
+                fetchData={fetchData}
+            />
+
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
                 <Grid item xs={3} height='100%'>
                     <Grid item xs={9} container spacing={2} height='100%'>
