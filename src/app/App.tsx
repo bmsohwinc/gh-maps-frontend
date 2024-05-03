@@ -8,7 +8,7 @@ import FirsLoadBar from "./bars/FirstLoadBar";
 
 
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'https://gh-maps-backend.onrender.com/';
 const FOLLOWINGS_BASE_URL = `${BASE_URL}/followings`;
 const FOLLOWERS_BASE_URL = `${BASE_URL}/followers`;
 
