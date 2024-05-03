@@ -10,6 +10,7 @@ export default function HistoryItem(props : HistoryCard) {
             })}
             style={{
                 textAlign: 'left',
+                cursor: 'pointer',
             }}
         >
             <Grid item xs={12} container spacing={2} height='100%'>

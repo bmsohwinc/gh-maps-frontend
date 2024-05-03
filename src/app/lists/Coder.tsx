@@ -11,6 +11,7 @@ export default function Coder(props) {
             onClick={() => props.onClick({ login: props.login, avatarUrl: props.avatarUrl })}
             sx={{
                 width: '97%',
+                cursor: 'pointer',
             }}
         >
             <Grid item xs={12} container spacing={2} height='100%'>

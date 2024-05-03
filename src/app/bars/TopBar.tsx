@@ -47,6 +47,12 @@ export default function TopBar(props) {
                             inputProps={{ 'aria-label': 'search google maps' }}
                             value={inputUser}
                             onChange={handleUserInputChange}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    fetchData();
+                                }
+                            }}
                         />
                         <IconButton
                             type="button"

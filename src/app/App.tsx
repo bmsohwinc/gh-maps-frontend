@@ -25,6 +25,7 @@ import HistoryItem from "./lists/HistoryItem";
 import TopBar from "./bars/TopBar";
 import StatsBar from "./bars/StatsBar";
 import BottomBar from "./bars/BottomBar";
+import FirsLoadBar from "./bars/FirstLoadBar";
 
 
 
@@ -43,6 +44,7 @@ export default function App() {
     const [dataStore, setDataStore] = useImmer<Map<String, UserDataState>>(new Map<String, UserDataState>());
     const [uniqUsers, setUniqUsers] = useImmer<Set<String>>(new Set<String>());
     const [openToast, setOpenToast] = useState(false);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
 
     const handleToastClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -150,6 +152,10 @@ export default function App() {
             return;
         }
 
+        if (isFirstLoad) {
+            setIsFirstLoad(false);
+        }
+
         if (inputUser !== currentUserState.login) {
             handleCoderClick({
                 login: inputUser,
@@ -221,24 +227,32 @@ export default function App() {
                 handleToastClose={handleToastClose}
             />
 
-            <StatsBar
-                uniqUsers={uniqUsers}
-                login={currentUserState.login}
-                name={currentUserState.name}
-                avatarUrl={currentUserState.avatarUrl}
-                totalFollowings={currentUserState.totalFollowings}
-                totalFollowers={currentUserState.totalFollowers}
-                fetchData={fetchData}
-            />
+            {
+                isFirstLoad ? (
+                    <FirsLoadBar />
+                ) : (
+                    <>
+                        <StatsBar
+                            uniqUsers={uniqUsers}
+                            login={currentUserState.login}
+                            name={currentUserState.name}
+                            avatarUrl={currentUserState.avatarUrl}
+                            totalFollowings={currentUserState.totalFollowings}
+                            totalFollowers={currentUserState.totalFollowers}
+                            fetchData={fetchData}
+                        />
 
-            <BottomBar
-                recentlyViewed={recentlyViewed}
-                followingsData={currentUserState.followingsData}
-                followersData={currentUserState.followersData}
-                totalFollowings={currentUserState.totalFollowings}
-                totalFollowers={currentUserState.totalFollowers}
-                handleCoderClick={handleCoderClick}
-            />
+                        <BottomBar
+                            recentlyViewed={recentlyViewed}
+                            followingsData={currentUserState.followingsData}
+                            followersData={currentUserState.followersData}
+                            totalFollowings={currentUserState.totalFollowings}
+                            totalFollowers={currentUserState.totalFollowers}
+                            handleCoderClick={handleCoderClick}
+                        />
+                    </>
+                )
+            }
         </div>
     );
 }

@@ -51,7 +51,7 @@ export default function StatsBar(props) {
                     }}
                 >
                     <Grid container spacing={1}>
-                        <Grid item xs={8} height='100%'>
+                        <Grid item xs={7.5} height='100%'>
                             <Stack
                                 direction="row"
                                 alignItems="center"
@@ -72,26 +72,26 @@ export default function StatsBar(props) {
                                 </div>
                             </Stack>
                         </Grid>
-                        <Grid item xs={4} height='100%' >
+                        <Grid item xs={4.5} height='100%' >
                             <Stack
                                 direction="row"
                                 alignItems="center"
-                                // justifyContent='space-between'
+                                justifyContent='space-between'
                                 gap={1}
                                 width={'100%'}
                             >
                                 <Divider sx={{ height: 72, m: 0.5 }} orientation="vertical" />
                                 <div style={{
-                                    width: 80
+                                    // width: 80
                                 }}>
                                     <Typography variant="h4">{numberFormatter.format(props.totalFollowings)}</Typography>
-                                    <p>Followings</p>
+                                    <Typography variant="h6">Followings</Typography>
                                 </div>
                                 <div style={{
-                                    width: 80
+                                    // width: 80
                                 }}>
                                     <Typography variant="h4">{numberFormatter.format(props.totalFollowers)}</Typography>
-                                    <p>Followers</p>
+                                    <Typography variant="h6">Followers</Typography>
                                 </div>
                             </Stack>
                         </Grid>
