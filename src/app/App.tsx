@@ -22,6 +22,7 @@ import { getInitialUserDataState, numberFormatter } from "./utils";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import HistoryItem from "./lists/HistoryItem";
+import TopBar from "./bars/TopBar";
 
 
 
@@ -210,129 +211,14 @@ export default function App() {
             width: '100%',
             height: '100%',
         }}>
-            {/* <AppBar
-                position="static"
-                color="info"
-                sx={{
-                    boxShadow: 1,
-                    borderRadius: 2,
-                    height: 64,
-                }}
-            >
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Search GitHub Connections of user @
-                        <input
-                            value={`${inputUser}`}
-                            onChange={handleUserInputChange}
-                            placeholder="Username..."
-                            style={{
-                                backgroundColor: 'transparent',
-                                border: '0px',
-                                outlineColor: 'transparent',
-                            }}
-                        />
-                        <Button
-                            color='success'
-                            variant='contained'
-                            onClick={fetchData}
-                            disabled={inputUser === ''}
-                        >
-                            GO!
-                        </Button>
-                    </Typography>
-                    <div>Hi!</div>
-                </Toolbar>
-                <Snackbar
-                    open={openToast}
-                    autoHideDuration={3000}
-                    onClose={handleToastClose}
-                    message="User doesn't exist!"
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                />
-            </AppBar> */}
-            {/* <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}> */}
-            <Grid container spacing={2}>
-                <Grid item xs={2} height='100%'>
-                    <b style={{ fontSize: 25 }} >gh-navigator</b>
-                </Grid>
-                <Grid item xs={8} height='100%' sx={{
-                    textAlign: 'center',
-                    display: 'flex',
-                    justifyContent: 'center',
-                }}>
-                    <Paper
-                        component="form"
-                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-                    >
-                        <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            placeholder="Look up a GitHub user..."
-                            inputProps={{ 'aria-label': 'search google maps' }}
-                            value={inputUser}
-                            onChange={handleUserInputChange}
-                        />
-                        <IconButton 
-                            type="button" 
-                            sx={{ p: '10px' }}
-                            aria-label="search"
-                            onClick={fetchData}
-                        >
-                            <SearchIcon />
-                        </IconButton>
-                    </Paper>
-                    {/* <input
-                        value={`${inputUser}`}
-                        onChange={handleUserInputChange}
-                        placeholder="Search for a GitHub user"
-                        style={{
-                            fontSize: 25,
-                            // backgroundColor: 'transparent',
-                            border: '0px',
-                            borderRadius: '5px',
-                            padding: 4,
-                            outlineColor: 'transparent',
-                        }}
-                    />
-                    &nbsp;
-                    <IconButton
-                        onClick={fetchData}
-                        size="medium"
-                        disabled={inputUser === ''}
-                        color="primary"
-                        sx={{
-                            marginTop: -1,
-                        }}
-                    >
-                        <SearchIcon />
-                    </IconButton> */}
-                    {/* <Button
-                        color='success'
-                        size="small"
-                        variant='contained'
-                        sx={{
-                            fontSize: 12,
-                        }}
-                        onClick={fetchData}
-                        disabled={inputUser === ''}
-                    >
-                        GO
-                    </Button> */}
-                </Grid>
-                <Grid item xs={2} height='100%' sx={{ textAlign: 'right', fontSize: 25 }}>
-                    <a href="https://github.com/bmsohwinc/gh-maps-frontend" target="_blank">
-                        <GitHubIcon />
-                    </a>
-                </Grid>
-            </Grid>
-            {/* </Typography> */}
-            <Snackbar
-                open={openToast}
-                autoHideDuration={3000}
-                onClose={handleToastClose}
-                message="User doesn't exist!"
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            <TopBar 
+                inputUser={inputUser}
+                handleUserInputChange={handleUserInputChange}
+                fetchData={fetchData}
+                openToast={openToast}
+                handleToastClose={handleToastClose}
             />
+            
             <Grid container spacing={2} height='calc(100% - 64px)' marginTop={2}>
                 <Grid item xs={3} height='100%'>
                     <Grid item xs={9} container spacing={2} height='100%'>
