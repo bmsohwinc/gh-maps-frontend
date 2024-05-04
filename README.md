@@ -12,10 +12,12 @@ With **gh-navigator**, you can access _any_ user's connections on a single page,
 4. Create **search lists** for future reference
 
 ## Local setup
+1. Frontend (this repository)
 ```sh
 npm install
 npm run dev
 ```
+2. Companion Backend repository [here](https://github.com/bmsohwinc/gh-maps-backend)
 
 ## Tech stack
 1. Languages: TypeScript, JavaScript
