@@ -2,8 +2,8 @@
 View your and other's GitHub connections a little easily! [Try it out LIVE](https://gh-maps-frontend.vercel.app/)!
 
 ## Why gh-navigator?
-While you can view followers and following (collectively, connections) profiles on GitHub, they are not neatly presented in a single page, and needs several clicks and page visits.\
-With gh-navigator, you'll have all connections listed on a single page, with a support for history of profiles you visited as well as quick stats that help you discover connections more easily.
+Without a central page for user connections, searching users and their projects on GitHub is a little hard, requiring multiple clicks and page visits.\
+With **gh-navigator**, you can access _any_ user's connections on a single page, with local history tracking, as well as create profile lists.
 
 ## Top features
 1. **Single page** to view all connections of any user
