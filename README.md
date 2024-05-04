@@ -1,4 +1,4 @@
-## gh-navigator
+# gh-navigator
 View your and other's GitHub connections a little easily! [Try it out LIVE](https://gh-maps-frontend.vercel.app/)!
 
 ## Why gh-navigator?
