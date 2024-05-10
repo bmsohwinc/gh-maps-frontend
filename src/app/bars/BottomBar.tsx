@@ -16,7 +16,7 @@ export default function BottomBar(props) {
     } = props;
 
     return (
-        <Grid item container spacing={2} height='calc(100% - 125px)'>
+        <Grid item container spacing={2} height='calc(100% - 131px)'>
             <Grid item xs={2.5} height='100%'>
                 <Item
                     elevation={3}

@@ -6,14 +6,7 @@ import StatsBar from "./bars/StatsBar";
 import BottomBar from "./bars/BottomBar";
 import FirsLoadBar from "./bars/FirstLoadBar";
 
-
-
-const BASE_URL = 'https://gh-maps-backend.onrender.com';
-const FOLLOWINGS_BASE_URL = `${BASE_URL}/followings`;
-const FOLLOWERS_BASE_URL = `${BASE_URL}/followers`;
-
-
-
+import { FOLLOWERS_BASE_URL, FOLLOWINGS_BASE_URL } from "./consts/const";
 
 export default function App() {
 
@@ -21,9 +14,18 @@ export default function App() {
     const [currentUserState, setCurrentUserState] = useImmer<UserDataState>(getInitialUserDataState());
     const [recentlyViewed, setRecentlyViewed] = useImmer<HistoryCard[]>([]);
     const [dataStore, setDataStore] = useImmer<Map<string, UserDataState>>(new Map<string, UserDataState>());
-    const [uniqUsers, setUniqUsers] = useImmer<Set<string>>(new Set<string>());
+    const [uniqUsers, setUniqUsers] = useImmer<Map<string, BasicUserInfo>>(new Map<string, BasicUserInfo>());
     const [openToast, setOpenToast] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+    const upsertUniqueUsers = (userData : CoderCard[]) => {
+        setUniqUsers((draft) => {
+            userData.forEach((item) => draft.set(item.login, {
+                login: item.login,
+                avatarUrl: item.avatarUrl,
+            }));
+        });
+    }
 
     const handleToastClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -85,9 +87,7 @@ export default function App() {
                         draft.followingsPage = data.followingsPage;
                     });
 
-                    setUniqUsers((draft) => {
-                        data.followingsData.forEach(item => draft.add(item.login));
-                    });
+                    upsertUniqueUsers(data.followingsData);
                 })
                 .catch((err) => {
                     setInputUser(currentUserState.login);
@@ -113,9 +113,7 @@ export default function App() {
                         draft.followersPage = data.followersPage;
                     });
 
-                    setUniqUsers((draft) => {
-                        data.followersData.forEach(item => draft.add(item.login));
-                    });
+                    upsertUniqueUsers(data.followersData);
                 })
                 .catch((err) => {
                     setInputUser(currentUserState.login);
@@ -161,9 +159,8 @@ export default function App() {
                         draft.followingsData.push(...data.followingsData);
                         draft.followingsPage = data.followingsPage;
                     });
-                    setUniqUsers((draft) => {
-                        data.followingsData.forEach(item => draft.add(item.login));
-                    });
+
+                    upsertUniqueUsers(data.followingsData);
                 });
         }
 
@@ -186,9 +183,7 @@ export default function App() {
                         draft.followersPage = data.followersPage;
                     });
 
-                    setUniqUsers((draft) => {
-                        data.followersData.forEach(item => draft.add(item.login));
-                    });
+                    upsertUniqueUsers(data.followersData);
                 });
         }
     }

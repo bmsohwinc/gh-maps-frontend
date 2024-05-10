@@ -1,15 +1,52 @@
-import { Avatar, Button, Divider, Grid, Stack } from "@mui/material";
+import { Avatar, Button, Divider, Grid, IconButton, Stack } from "@mui/material";
 import { Item } from "../lists/Item";
 import ShareIcon from '@mui/icons-material/Share';
 import { numberFormatter } from "../utils";
 import RotateRightIcon from '@mui/icons-material/RotateRight';
+import { LISTS_URL } from "../consts/const";
+import { useRouter } from "next/navigation";
+import CircularProgress from '@mui/material/CircularProgress';
+import { useState } from "react";
+
 
 export default function StatsBar(props) {
     const { uniqUsers } = props;
+    const router = useRouter();
+
+    const [showLoading, setShowLoading] = useState(false);
+
+    function sendProfiles() {
+        setShowLoading(true);
+
+        if (uniqUsers.size === 0) {
+            setShowLoading(false);
+            return;
+        }
+
+        const data = {
+            data: Array.from(uniqUsers.values())
+        };
+
+        fetch(LISTS_URL, {
+            method: "POST",
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        }).then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                router.push(`/list/${data.userListId}`);
+            })
+            .catch((err) => console.error(err));
+    }
 
     return (
         <Grid item container spacing={2} marginTop={0}>
             <Grid item xs={2.5} height='100%'>
+                {showLoading && (<CircularProgress color="success" />)}
                 <Item
                     elevation={3}
                     sx={{
@@ -34,8 +71,10 @@ export default function StatsBar(props) {
                                 justifyContent: 'center',
                             }}
                         >
-                            <p>Share these profiles!</p>
-                            <ShareIcon />
+                            <p>Save these profiles!</p>
+                            <IconButton size="small" onClick={sendProfiles}>
+                                <ShareIcon color='primary' fontSize="small" />
+                            </IconButton>
                         </Stack>
                     </div>
 
@@ -58,7 +97,7 @@ export default function StatsBar(props) {
                                 gap={2}
                             >
                                 <a href={`https://github.com/${props.login}`} target="_blank">
-                                    <Avatar alt={props.login} src={props.avatarUrl} sx={{ width: 84, height: 84 }} />
+                                    <Avatar alt={props.login} src={props.avatarUrl} sx={{ width: 90, height: 90 }} />
                                 </a>
                                 <div style={{
                                     textAlign: 'left',

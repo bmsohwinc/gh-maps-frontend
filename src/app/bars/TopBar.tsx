@@ -74,7 +74,7 @@ export default function TopBar(props) {
                             width={'100%'}
                         >
                             <GitHubIcon fontSize="large" />
-                            <span style={{ fontSize: 16 }}>Fork on </span>
+                            <span style={{ fontSize: 16 }}>Check on </span>
                         </Stack>
 
                     </a>

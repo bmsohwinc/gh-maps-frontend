@@ -1,5 +1,10 @@
 type nString = null | string;
 
+interface BasicUserInfo {
+    login: string,
+    avatarUrl: string,
+}
+
 interface HistoryCard {
     login: string,
     avatarUrl: string,
